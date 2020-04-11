@@ -6,9 +6,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.PsiCommentImpl;
+import com.intellij.psi.javadoc.PsiDocComment;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 
 public class StatisticReport extends AnAction {
@@ -27,8 +31,15 @@ public class StatisticReport extends AnAction {
 
         PsiMethod[] methods = extractMethods(psiFile);
         for (PsiMethod method : methods) {
-            System.out.println("Method name: " + method.getName());
-            System.out.println("Statements: " + method.getBody().getStatementCount());
+            int commentsCount = commentsCount(method);
+            int statementsCount = statementsCount(method);
+            boolean hasJavaDoc = hasJavaDoc(method);
+            /* TODO: Lines of code
+            *   Effective Lines of code
+            *   Cyclomatic complexity
+            *   Number of times called
+            *   Which/How many methods override it (if any)
+            */
         }
 
         StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Selected!");
@@ -40,6 +51,23 @@ public class StatisticReport extends AnAction {
         }
         Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
 
+    }
+
+    public int statementsCount(PsiMethod method) {
+        PsiCodeBlock methodBody = method.getBody();
+        Collection<PsiStatement> statements = PsiTreeUtil.collectElementsOfType(methodBody, PsiStatement.class);
+        return statements.size();
+    }
+
+    public int commentsCount(PsiMethod method) {
+        PsiCodeBlock methodBody = method.getBody();
+        Collection<PsiCommentImpl> comments = PsiTreeUtil.collectElementsOfType(methodBody, PsiCommentImpl.class);
+        return comments.size();
+    }
+
+    public boolean hasJavaDoc(PsiMethod method) {
+        PsiDocComment comment = method.getDocComment();
+        return comment != null;
     }
 
     // doesn't take into account inner classes!
