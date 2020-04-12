@@ -1,18 +1,16 @@
 <idea-plugin>
-    <id>com.your.company.toy_plugin</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>org.example.IntelliJ_Toy_Plugin</id>
+    <name>Statistic Report</name>
+    <vendor>IntelliJ</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Statistic is of the methods of the selected class is returned.
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
@@ -20,5 +18,11 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="main.java.StatisticReport" class="StatisticReport" text="Statistic Report"
+                description="Returns statistic of the method">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
+            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+        </action>
     </actions>
 </idea-plugin>
