@@ -2,7 +2,9 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
@@ -11,8 +13,12 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 
 public class StatisticReport extends AnAction {
@@ -41,7 +47,8 @@ public class StatisticReport extends AnAction {
             *   Which/How many methods override it (if any)
             */
         }
-
+        String path = Arrays.toString(ModuleRootManager.getInstance(ModuleManager.getInstance(Objects.requireNonNull(event.getProject())).getModules()[0]).getSourceRoots());
+        path = path.substring(8, path.length()-1);
         StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Selected!");
         String dlgTitle = event.getPresentation().getDescription();
         // If an element is selected in the editor, add info about it.
@@ -51,6 +58,11 @@ public class StatisticReport extends AnAction {
         }
         Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
 
+        try {
+            writeToFile(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int statementsCount(PsiMethod method) {
@@ -88,4 +100,20 @@ public class StatisticReport extends AnAction {
         return result;
     }
 
+    public static void writeToFile(String path) throws IOException {
+        File file = new File(path + "/Statistic report");
+        file.mkdir();
+
+        File fnew = new File(path + "/Statistic report/report.txt");
+        fnew.createNewFile();
+        String source = "Rt";
+
+        try {
+            FileWriter f2 = new FileWriter(fnew, false);
+            f2.write(source);
+            f2.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
