@@ -3,6 +3,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
@@ -16,12 +17,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 
 public class StatisticReport extends AnAction {
+    private static List<String> names;
+    private static List<Integer> values;
+    private static List<Boolean> javadoc;
+
 
     @Override
     public void update(AnActionEvent e) {
@@ -33,14 +36,35 @@ public class StatisticReport extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         Project currentProject = event.getProject();
+        Editor editor = event.getData(CommonDataKeys.EDITOR);
+
+        if (editor==null){
+            String dlgTitle = event.getPresentation().getDescription();
+            StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Not in editor");
+            Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
+            return;
+        }
+
         PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
 
         PsiMethod[] methods = extractMethods(psiFile);
+        names = new ArrayList<>();
+        values = new ArrayList<>();
+        javadoc = new ArrayList<>();
         for (PsiMethod method : methods) {
+            System.out.println(method.getName());
+            names.add(method.getName());
+            int cycloComplexity = CycloComplexity.getComplexityLvl(method);
+            System.out.println("\t CC"+ cycloComplexity);
             int commentsCount = commentsCount(method);
             int statementsCount = statementsCount(method);
             boolean hasJavaDoc = hasJavaDoc(method);
-            /* TODO: Lines of code
+            values.add(cycloComplexity);
+            values.add(commentsCount);
+            values.add(statementsCount);
+            javadoc.add(hasJavaDoc);
+            /* TODO:
+            *   Lines of code
             *   Effective Lines of code
             *   Cyclomatic complexity
             *   Number of times called
@@ -59,10 +83,22 @@ public class StatisticReport extends AnAction {
         Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
 
         try {
-            writeToHTML(path);
+            htmlTemplate.writeToHTML(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<String> getNames(){
+        return names;
+    }
+
+    public static List<Integer> getValues(){
+        return values;
+    }
+
+    public static List<Boolean> getJavadoc(){
+        return javadoc;
     }
 
     public int statementsCount(PsiMethod method) {
@@ -98,19 +134,5 @@ public class StatisticReport extends AnAction {
         T[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;
-    }
-
-    public static void writeToHTML(String path) throws IOException {
-        File file = new File(path + "/Statistic report");
-        file.mkdir();
-        String text = htmlTemplate.getStr("commentsCount", 5, "statementsCount", 1);
-        File newHtmlFile = new File(path + "/Statistic report/new.html");
-        try {
-            FileWriter f2 = new FileWriter(newHtmlFile, false);
-            f2.write(text);
-            f2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
