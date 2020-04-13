@@ -25,7 +25,6 @@ public class StatisticReport extends AnAction {
     private static List<String> names;
     private static List<Integer> values;
     private static List<Boolean> javadoc;
-    private static String path;
 
 
     @Override
@@ -73,9 +72,8 @@ public class StatisticReport extends AnAction {
             *   Which/How many methods override it (if any)
             */
         }
-        path = ModuleRootManager.getInstance(ModuleManager.getInstance(Objects.requireNonNull(event.getProject())).getModules()[0]).getSourceRoots()[0].getPath();
+        String path = psiFile.getManager().getProject().getBasePath();
         System.out.println(path);
-        ///path = path.substring(8, path.length()-1);
         StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Selected!");
         String dlgTitle = event.getPresentation().getDescription();
         // If an element is selected in the editor, add info about it.
