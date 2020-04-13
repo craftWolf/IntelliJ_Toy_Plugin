@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.PsiCommentImpl;
@@ -24,6 +25,7 @@ public class StatisticReport extends AnAction {
     private static List<String> names;
     private static List<Integer> values;
     private static List<Boolean> javadoc;
+    private static String path;
 
 
     @Override
@@ -71,8 +73,9 @@ public class StatisticReport extends AnAction {
             *   Which/How many methods override it (if any)
             */
         }
-        String path = Arrays.toString(ModuleRootManager.getInstance(ModuleManager.getInstance(Objects.requireNonNull(event.getProject())).getModules()[0]).getSourceRoots());
-        path = path.substring(8, path.length()-1);
+        path = ModuleRootManager.getInstance(ModuleManager.getInstance(Objects.requireNonNull(event.getProject())).getModules()[0]).getSourceRoots()[0].getPath();
+        System.out.println(path);
+        ///path = path.substring(8, path.length()-1);
         StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Selected!");
         String dlgTitle = event.getPresentation().getDescription();
         // If an element is selected in the editor, add info about it.

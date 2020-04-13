@@ -9,10 +9,11 @@ public class htmlTemplate {
                "</title> </head> <body> <table> <tr> <th>Method</th> <th>CC</th> " +
                "<th>Number of comments</th> <th>Number of statements</th> <th>Has JavaDoc comment</th> </tr>");
        if (names.size() == 0) return "No methods in the file!";
+       System.out.println(names.size() +" "+ values.size());
        for (int i = 0; i< names.size(); i++){
            text.append("<tr> <td>").append(names.get(i)).append("</td>");
-           for (int j = 0; j< values.size(); j++){
-               text.append(" <td>").append(values.get(j + i * values.size())).append("</td>");
+           for (int j = 0; j< values.size()/names.size(); j++){
+               text.append(" <td>").append(values.get(j + i * names.size())).append("</td>");
            }
            text.append(" <td>").append(javaDoc.get(i )).append("</td> </tr>");
        }
