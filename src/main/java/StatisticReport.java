@@ -11,11 +11,11 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.PsiCommentImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -59,7 +59,7 @@ public class StatisticReport extends AnAction {
         Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
 
         try {
-            writeToFile(path);
+            writeToHTML(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,17 +100,14 @@ public class StatisticReport extends AnAction {
         return result;
     }
 
-    public static void writeToFile(String path) throws IOException {
+    public static void writeToHTML(String path) throws IOException {
         File file = new File(path + "/Statistic report");
         file.mkdir();
-
-        File fnew = new File(path + "/Statistic report/report.txt");
-        fnew.createNewFile();
-        String source = "Rt";
-
+        String text = htmlTemplate.getStr("commentsCount", 5, "statementsCount", 1);
+        File newHtmlFile = new File(path + "/Statistic report/new.html");
         try {
-            FileWriter f2 = new FileWriter(fnew, false);
-            f2.write(source);
+            FileWriter f2 = new FileWriter(newHtmlFile, false);
+            f2.write(text);
             f2.close();
         } catch (IOException e) {
             e.printStackTrace();
