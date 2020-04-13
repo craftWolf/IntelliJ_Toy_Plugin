@@ -2,6 +2,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
@@ -27,14 +28,28 @@ public class StatisticReport extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         Project currentProject = event.getProject();
+        Editor editor = event.getData(CommonDataKeys.EDITOR);
+
+        if (editor==null){
+            String dlgTitle = event.getPresentation().getDescription();
+            StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Not in editor");
+            Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
+            return;
+        }
+
         PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
 
         PsiMethod[] methods = extractMethods(psiFile);
         for (PsiMethod method : methods) {
+            System.out.println(method.getName());
+            int cycloComplexity = CycloComplexity.getComplexityLvl(method);
+            System.out.println("\t CC"+ cycloComplexity);
             int commentsCount = commentsCount(method);
             int statementsCount = statementsCount(method);
             boolean hasJavaDoc = hasJavaDoc(method);
-            /* TODO: Lines of code
+
+            /* TODO:
+            *   Lines of code
             *   Effective Lines of code
             *   Cyclomatic complexity
             *   Number of times called
