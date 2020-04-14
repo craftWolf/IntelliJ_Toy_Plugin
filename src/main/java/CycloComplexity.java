@@ -43,6 +43,7 @@ class CycloComplexity {
 
         /**
          * Getter of the CC
+         *
          * @return complexity value
          */
         private int getComplexity() {
@@ -76,6 +77,12 @@ class CycloComplexity {
         @Override
         public void visitConditionalExpression(PsiConditionalExpression expression) {
             super.visitConditionalExpression(expression);
+            complexity++;
+        }
+
+        @Override
+        public void visitCatchSection(PsiCatchSection section) {
+            super.visitCatchSection(section);
             complexity++;
         }
 

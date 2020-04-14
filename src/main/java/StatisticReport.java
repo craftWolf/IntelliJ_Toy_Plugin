@@ -80,15 +80,45 @@ public class StatisticReport extends AnAction {
 
     }
 
+    /**
+     * Check if the method does an Override.
+     *
+     * @param psiMethod method to check for Override
+     * @return does it Override?
+     */
     public boolean doesOverride(PsiMethod psiMethod) {
         final List<Boolean> b = new ArrayList<>();
+        boolean isOverride = false;
         PsiAnnotation[] annotations = psiMethod.getAnnotations();
         if (annotations.length != 0) {
             for (@NotNull PsiAnnotation anno : annotations) {
-                if (anno.getQualifiedName().equals("Override")) return true;
+                if (anno.getQualifiedName().equals("Override")) isOverride = true;
             }
         }
-        return false;
+
+        PsiMethod[] superMethods = psiMethod.findDeepestSuperMethods();
+        return isOverride || (superMethods.length != 0);
+    }
+
+    /**
+     * Retrieves the Name of SuperClasses
+     * in case the given method Overrides.
+     *
+     * @param psiMethod method for which SuperClass is to be found
+     * @return String that denotes all the SuperClasses.
+     */
+    public String mySuper(PsiMethod psiMethod) {
+        if (doesOverride(psiMethod)) {
+            List<String> listOfClasses = new ArrayList<>();
+            PsiMethod[] superMethods = psiMethod.findDeepestSuperMethods();
+            if (superMethods.length != 0) {
+                for (PsiMethod sM : superMethods) {
+                    listOfClasses.add(PsiTreeUtil.getParentOfType(sM, PsiClass.class).getName());
+                }
+            } else return "SuperMethod Not part of the Project";
+
+            return listOfClasses.toString();
+        } else return "NoSuperMethod";
     }
 
     public int statementsCount(PsiMethod method) {
