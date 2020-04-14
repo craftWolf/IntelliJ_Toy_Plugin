@@ -20,7 +20,7 @@ public class LineMetrics {
         }
 
         allLines = countLines(method.getBody().textToCharArray())[0];
-        linesOfCode = countLines(pBlock.textToCharArray())[1];
+        linesOfCode = countLines(pBlock.textToCharArray())[1]-1;
     }
 
     private int[] countLines(char[] lines){

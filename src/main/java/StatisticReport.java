@@ -41,9 +41,17 @@ public class StatisticReport extends AnAction {
 
         PsiMethod[] methods = extractMethods(psiFile);
         for (PsiMethod method : methods) {
-            System.out.println(method.getName());
+
+            System.out.println("----"+method.getName()+"----");
             int cycloComplexity = CycloComplexity.getComplexityLvl(method);
             System.out.println("\t CC"+ cycloComplexity);
+
+            LineMetrics lM = new LineMetrics(method);
+            System.out.println("\t Lines "+lM.getAllLines()+" "+lM.getLinesOfCode());
+
+            CallsLookupUtil clu = new CallsLookupUtil(method);
+            System.out.println("\t Calls "+clu.getNumberOfCalls());
+
             int commentsCount = commentsCount(method);
             int statementsCount = statementsCount(method);
             boolean hasJavaDoc = hasJavaDoc(method);
