@@ -1,6 +1,9 @@
 package utils;
 
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Query;
@@ -13,9 +16,9 @@ import java.util.Hashtable;
 public final class CallsLookupUtil {
 
     /**
-     * Default Constructor
+     * Default Constructor.
      */
-    CallsLookupUtil() {
+    private CallsLookupUtil() {
     }
 
     /**
@@ -33,7 +36,7 @@ public final class CallsLookupUtil {
     }
 
     /**
-     * Calculate the Table of Pairs (Class,NumberOfCalls)
+     * Calculate the Table of Pairs (Class,NumberOfCalls).
      *
      * @param method method to work with.
      * @return table of (Class,NumberOfCalls) pairs

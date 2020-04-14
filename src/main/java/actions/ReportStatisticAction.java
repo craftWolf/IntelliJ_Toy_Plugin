@@ -1,28 +1,29 @@
 package actions;
 
-import output.htmlTemplate;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiMethod;
+import output.HtmlTemplate;
 import statistics.MethodStatistic;
-import utils.CallsLookupUtil;
-import utils.CycloComplexityUtil;
-import utils.LineMetricsUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.pom.Navigatable;
-import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
-import utils.MethodDetailsUtil;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
+/**
+ * Class that executes the defined action
+ * (Collect method statistics) and
+ * saves the report to a file.
+ *
+ */
 public class ReportStatisticAction extends AnAction {
 
     @Override
@@ -35,31 +36,36 @@ public class ReportStatisticAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         Project currentProject = event.getProject();
-        PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
+        final PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
 
+        // Notify user that a file has to be active
         if (psiFile == null) {
-            String dlgTitle = event.getPresentation().getDescription();
-            StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " No File Selected");
-            Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
+            Messages.showMessageDialog(currentProject, "Please make sure a file is selected",
+                    "No File Selected", Messages.getWarningIcon());
             return;
         }
-
         List<MethodStatistic> methodStatistics = calculateStats(psiFile);
+
+        // Save the report
         try {
             saveReport(psiFile, methodStatistics);
         } catch (IOException e) {
+            Messages.showMessageDialog(currentProject, "Failed to Save File",
+                    "Failed to Save", Messages.getErrorIcon());
             e.printStackTrace();
         }
-        Messages.showMessageDialog(currentProject, "Method statistics saved inside: " + htmlTemplate.OUTPUT_DIR,
+        Messages.showMessageDialog(currentProject, "Method statistics saved in: " + HtmlTemplate.OUTPUT_DIR + " folder",
                 "Statistics Saved", Messages.getInformationIcon());
     }
 
     /**
-     * The method that calculates all the statistics.
-     * @param psiFile File on which the plugin is running
+     * Method that calculates all the statistics for all methods.
+     *
+     * @param psiFile file containing the methods.
+     * @return a list where statistics for each
+     * method is contained.
      */
-
-    public List<MethodStatistic> calculateStats(final PsiFile psiFile) {
+    private List<MethodStatistic> calculateStats(final PsiFile psiFile) {
         List<MethodStatistic> methodStats = new ArrayList<>();
         final PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
         final PsiClass[] classes = psiJavaFile.getClasses();
@@ -71,14 +77,28 @@ public class ReportStatisticAction extends AnAction {
         return methodStats;
     }
 
-    public void addMethods(PsiMethod[] methods, List<MethodStatistic> methodStats) {
+    /**
+     * Calculates the statistics for all the methods provided
+     * and appends them to the provided list.
+     *
+     * @param methods file containing the methods.
+     * @param methodStats the list with already calculated stats.
+     */
+    private void addMethods(PsiMethod[] methods, List<MethodStatistic> methodStats) {
         for (final PsiMethod method : methods) {
             MethodStatistic methodStatistic = new MethodStatistic(method);
             methodStats.add(methodStatistic);
         }
     }
 
-    public void addFromInnerClass(PsiClass javaClass, List<MethodStatistic> methodStats) {
+    /**
+     * Loops through all the inner classes of a method in order
+     * to calculate statistics for them.
+     *
+     * @param javaClass class with possibly inner classes
+     * @param methodStats  the list with already calculated stats.
+     */
+    private void addFromInnerClass(PsiClass javaClass, List<MethodStatistic> methodStats) {
         PsiClass[] classes = javaClass.getInnerClasses();
         for (final PsiClass innerClass : classes) {
             addMethods(innerClass.getMethods(), methodStats);
@@ -86,13 +106,14 @@ public class ReportStatisticAction extends AnAction {
     }
 
     /**
-     * The method that saves report.
-     * @param psiFile File on which the plugin is running
+     * Saves the report to an html file.
+     *
+     * @param psiFile          File on which the plugin is running
      * @param methodStatistics All the gathered statistics that goes to report
      */
-    public void saveReport(final PsiFile psiFile, List<MethodStatistic> methodStatistics) throws IOException {
+    private void saveReport(final PsiFile psiFile, List<MethodStatistic> methodStatistics) throws IOException {
         String path = psiFile.getManager().getProject().getBasePath();
-        htmlTemplate.writeToHTML(path, methodStatistics);
+        HtmlTemplate.writeToFile(path, methodStatistics);
     }
 
 }

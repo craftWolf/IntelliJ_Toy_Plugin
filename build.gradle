@@ -18,7 +18,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2019.3.4'
+    updateSinceUntilBuild = false
     plugins 'java'
 }
 patchPluginXml {

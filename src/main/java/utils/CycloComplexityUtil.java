@@ -8,6 +8,9 @@ import com.intellij.psi.*;
  */
 public final class CycloComplexityUtil {
 
+    private CycloComplexityUtil() {
+    }
+
     /**
      * Retrieves the CC of the given PsiMethod.
      *
@@ -39,12 +42,12 @@ public final class CycloComplexityUtil {
     private static class ComplexityVisitor extends JavaRecursiveElementWalkingVisitor {
 
         /**
-         * Default CC for any PsiMethod
+         * Default CC for any PsiMethod.
          */
         private int complexity = 1;
 
         /**
-         * Getter of the CC
+         * Getter of the CC.
          *
          * @return complexity value
          */

@@ -22,17 +22,26 @@ It is a student project which was implemented on the request of a JetBrains repr
 
 1) Clone this repository using SSH or HTTPS.
 2) Inside IntelliJ IDEA terminal invoke `gradle buildPlugin` to create the plugin distribution.
-The resulting JAR/ZIP is located in *build/distributions*.
+The resulting JAR/ZIP is located in `build/distributions` (in the root of your project).
 3) [Install](https://www.jetbrains.com/help/idea/managing-plugins.html#installing-plugins-from-disk) the plugin manually.
 
 
-### Run
+### Run with installation
 
 1) Download and install the plugin
 2) Make sure the java file you want is opened and you are inside the editor
 3) Go to Tools -> Statistic Report;
-    - Alternatively, you can press *Ctrl+Alt+A, C*
-4) Your report will be generated inside */Statistic report* folder
+    - Alternatively, you can press `Ctrl+Alt+M, S`
+4) Your report will be generated inside the `/statisticReport` folder
+
+### Run without installation
+
+1) Download and install the plugin
+2) 
+2) Make sure the java file you want is opened and you are inside the editor
+3) Go to Tools -> Statistic Report;
+    - Alternatively, you can press `Ctrl+Alt+M, S`
+4) Your report will be generated inside the `/statisticReport` folder
 
 
 ### Generated method metrics
@@ -43,8 +52,9 @@ The resulting JAR/ZIP is located in *build/distributions*.
   - Lines of Code
   - Cyclomatic complexity
   - Does it have JavaDoc comment
-  - Num of calls in the file containing the method
+  - Num of calls in the whole project
   - Does it override any other method
+  - Name of the class with the method it overrides
 
 
 ## Built With

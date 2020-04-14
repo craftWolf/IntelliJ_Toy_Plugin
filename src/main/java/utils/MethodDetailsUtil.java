@@ -32,7 +32,9 @@ public final class MethodDetailsUtil {
         final PsiAnnotation[] annotations = psiMethod.getAnnotations();
         if (annotations.length != 0) {
             for (@NotNull final PsiAnnotation annotation : annotations) {
-                if (annotation.getQualifiedName().equals("Override")) isOverride = true;
+                if (annotation.getQualifiedName().equals("Override")) {
+                    isOverride = true;
+                }
             }
         }
 
@@ -55,10 +57,13 @@ public final class MethodDetailsUtil {
                 for (PsiMethod sM : superMethods) {
                     listOfClasses.add(PsiTreeUtil.getParentOfType(sM, PsiClass.class).getName());
                 }
-            } else return "SuperMethod Not part of the Project";
-
+            } else {
+                return "SuperMethod Not part of the Project";
+            }
             return listOfClasses.toString();
-        } else return "NoSuperMethod";
+        } else {
+            return "NoSuperMethod";
+        }
     }
 
     /**

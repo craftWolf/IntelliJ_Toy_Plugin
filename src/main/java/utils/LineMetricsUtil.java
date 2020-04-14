@@ -45,7 +45,7 @@ public final class LineMetricsUtil {
      * @return number of Code-Lines
      */
     public static int countLinesOfCode(final PsiMethod psiMethod) {
-        PsiCodeBlock pBlock = (PsiCodeBlock) psiMethod.getBody().copy(); //create a copy of the method
+        PsiCodeBlock pBlock = (PsiCodeBlock) psiMethod.getBody().copy(); //create method copy
         Collection<PsiCommentImpl> comments = PsiTreeUtil.collectElementsOfType(pBlock, PsiCommentImpl.class);
         if (!comments.isEmpty()) {
             for (PsiCommentImpl comment : comments) {
