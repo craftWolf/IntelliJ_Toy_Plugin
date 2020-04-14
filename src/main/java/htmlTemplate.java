@@ -6,7 +6,7 @@ import java.util.List;
 public class htmlTemplate {
     public static String getStr(List<String> names, List<Integer> values, List<Boolean> booleans){
        StringBuilder text = new StringBuilder( "<html> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <title> Statistic Report"+
-               "</title> </head> <body> <table align = \"center\"> <tr> <th>Method</th> <th>CC</th> " +
+               "</title> </head> <body> <table align = \"center\" width=\"100%\" style=\"text-align:center\" > <tr> <th>Method</th> <th>CC</th> " +
                "<th>Number of comments</th> <th>Number of statements</th> <th>Number of calls</th>" +
                "<th>Number of lines</th> <th>Lines of code</th> <th>Has JavaDoc comment</th> <th>Does override something?</th></tr>");
        if (names.size() == 0) return "No methods in the file!";
