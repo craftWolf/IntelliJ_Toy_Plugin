@@ -1,1 +1,59 @@
 # IntelliJ_Toy_Plugin
+
+**IntelliJ_Toy_Plugin** is a plugin built for [IntelliJ IDEA](https://www.jetbrains.com/idea/) that collects statistics -- and presents a summary report -- on methods defined in the currently opened file.
+
+It is a student project which was implemented on the request of a JetBrains representative so that we would show what we are capable of. It was done in order to get a chance to be approved for a project in the TU Delft's course *CSE2000*, Software Project. It was developed by 3 students in less than a week.
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Run](#run)
+  - [Generated method metrics](#generated-method-metrics)
+
+- [Built With](#built-with)
+
+- [Developers](#developers)
+
+
+## Getting Started
+
+### Installation
+
+1) Clone this repository using SSH or HTTPS.
+2) Inside IntelliJ IDEA terminal invoke `gradle buildPlugin` to create the plugin distribution.
+The resulting JAR/ZIP is located in *build/distributions*.
+3) [Install](https://www.jetbrains.com/help/idea/managing-plugins.html#installing-plugins-from-disk) the plugin manually.
+
+
+### Run
+
+1) Download and install the plugin
+2) Make sure the java file you want is opened and you are inside the editor
+3) Go to Tools -> Statistic Report;
+    - Alternatively, you can press *Ctrl+Alt+A, C*
+4) Your report will be generated inside */Statistic report* folder
+
+
+### Generated method metrics
+
+  - Number of method lines
+  - Number of statements
+  - Number of comments
+  - Lines of Code
+  - Cyclomatic complexity
+  - Does it have JavaDoc comment
+  - Num of calls in the file containing the method
+  - Does it override any other method
+
+
+## Built With
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) - IDE
+- [Gradle](http://gradle.org) - Dependency Management
+
+
+## Developers
+
+* Mihai Plotean
+* Mihail Chirosca
+* Alex Simonov
