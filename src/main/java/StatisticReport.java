@@ -32,7 +32,7 @@ public class StatisticReport extends AnAction {
         Project currentProject = event.getProject();
         Editor editor = event.getData(CommonDataKeys.EDITOR);
 
-        if (editor==null){
+        if (editor == null) {
             String dlgTitle = event.getPresentation().getDescription();
             StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Not in editor");
             Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
@@ -42,17 +42,17 @@ public class StatisticReport extends AnAction {
         PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
 
         PsiMethod[] methods = extractMethods(psiFile);
-        for (PsiMethod method : methods) {
+        for (final PsiMethod method : methods) {
 
-            System.out.println("----"+method.getName()+"----");
+            System.out.println("----" + method.getName() + "----");
             int cycloComplexity = CycloComplexity.getComplexityLvl(method);
-            System.out.println("\t CC"+ cycloComplexity);
+            System.out.println("\t CC" + cycloComplexity);
 
             LineMetrics lM = new LineMetrics(method);
-            System.out.println("\t Lines "+lM.getAllLines()+" "+lM.getLinesOfCode());
+            System.out.println("\t Lines " + lM.getAllLines() + " " + lM.getLinesOfCode());
 
-            CallsLookupUtil clu = new CallsLookupUtil(method);
-            System.out.println("\t Calls "+clu.getNumberOfCalls());
+            CallsLookup clu = new CallsLookup(method);
+            System.out.println("\t Calls " + clu.getNumberOfCalls());
 
             System.out.println("\t Ovverides? " + doesOverride(method));
 
@@ -61,12 +61,12 @@ public class StatisticReport extends AnAction {
             boolean hasJavaDoc = hasJavaDoc(method);
 
             /* TODO:
-            *   Lines of code
-            *   Effective Lines of code
-            *   Cyclomatic complexity
-            *   Number of times called
-            *   Which/How many methods override it (if any)
-            */
+             *   Lines of code
+             *   Effective Lines of code
+             *   Cyclomatic complexity
+             *   Number of times called
+             *   Which/How many methods override it (if any)
+             */
         }
 
         StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Selected!");
@@ -80,11 +80,11 @@ public class StatisticReport extends AnAction {
 
     }
 
-    public boolean doesOverride(PsiMethod psiMethod){
+    public boolean doesOverride(PsiMethod psiMethod) {
         final List<Boolean> b = new ArrayList<>();
         PsiAnnotation[] annotations = psiMethod.getAnnotations();
-        if (annotations.length!=0){
-            for(@NotNull PsiAnnotation anno:annotations){
+        if (annotations.length != 0) {
+            for (@NotNull PsiAnnotation anno : annotations) {
                 if (anno.getQualifiedName().equals("Override")) return true;
             }
         }

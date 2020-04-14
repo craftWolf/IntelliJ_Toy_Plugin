@@ -1,5 +1,4 @@
 import com.intellij.psi.*;
-import com.intellij.psi.util.PsiElementFilter;
 
 class CycloComplexity {
 
