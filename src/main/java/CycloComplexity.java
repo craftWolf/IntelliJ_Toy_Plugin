@@ -1,9 +1,18 @@
 import com.intellij.psi.*;
 
+/**
+ * Class responsible for calculating
+ * Cyclomatic Complexity of the provided Method.
+ */
 class CycloComplexity {
 
-
-    public static int getComplexityLvl(PsiElement element) {
+    /**
+     * Retrieves the CC of the given PsiMethod.
+     *
+     * @param element PsiMethod for which CC is to be calculated
+     * @return the CC value
+     */
+    public static int getComplexityLvl(PsiMethod element) {
         if (element == null) {
             return 1;
         }
@@ -12,10 +21,30 @@ class CycloComplexity {
         return cVisitor.getComplexity();
     }
 
+    /**
+     * Class for Recursive Visit and CC calculation
+     * of the PsiMethod components
+     * <p>
+     * Extend {@see JavaRecursiveElementVisitor}
+     * <p>
+     * Supports:
+     * - If Statements
+     * - For Statements
+     * - ForEach Statements
+     * - While Statements
+     * - Conditional Expressions {@code (a > b) ? a : b;}
+     */
     private static class ComplexityVisitor extends JavaRecursiveElementWalkingVisitor {
 
+        /**
+         * Default CC for any PsiMethod
+         */
         private int complexity = 1;
 
+        /**
+         * Getter of the CC
+         * @return complexity value
+         */
         private int getComplexity() {
             return complexity;
         }

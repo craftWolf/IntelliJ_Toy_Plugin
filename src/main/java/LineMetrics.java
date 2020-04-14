@@ -4,6 +4,10 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 import java.util.Collection;
 
+/**
+ * Calculate the totalLine number in a Method
+ * as well as Code-only lines.
+ */
 public class LineMetrics {
     /**
      * Field to contain the Number of All the lines in a method.
