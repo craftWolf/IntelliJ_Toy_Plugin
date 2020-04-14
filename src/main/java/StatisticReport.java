@@ -12,8 +12,10 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 
 public class StatisticReport extends AnAction {
@@ -52,6 +54,8 @@ public class StatisticReport extends AnAction {
             CallsLookupUtil clu = new CallsLookupUtil(method);
             System.out.println("\t Calls "+clu.getNumberOfCalls());
 
+            System.out.println("\t Ovverides? " + doesOverride(method));
+
             int commentsCount = commentsCount(method);
             int statementsCount = statementsCount(method);
             boolean hasJavaDoc = hasJavaDoc(method);
@@ -74,6 +78,17 @@ public class StatisticReport extends AnAction {
         }
         Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
 
+    }
+
+    public boolean doesOverride(PsiMethod psiMethod){
+        final List<Boolean> b = new ArrayList<>();
+        PsiAnnotation[] annotations = psiMethod.getAnnotations();
+        if (annotations.length!=0){
+            for(@NotNull PsiAnnotation anno:annotations){
+                if (anno.getQualifiedName().equals("Override")) return true;
+            }
+        }
+        return false;
     }
 
     public int statementsCount(PsiMethod method) {
