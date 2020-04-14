@@ -45,7 +45,11 @@ public class ReportStatisticAction extends AnAction {
         }
 
         List<MethodStatistic> methodStatistics = calculateStats(psiFile);
-        saveReport(psiFile);
+        try {
+            saveReport(psiFile, methodStatistics);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Messages.showMessageDialog(currentProject, "Method statistics saved inside: " + htmlTemplate.OUTPUT_DIR,
                 "Statistics Saved", Messages.getInformationIcon());
     }
@@ -76,10 +80,9 @@ public class ReportStatisticAction extends AnAction {
         }
     }
 
-    public void saveReport(final PsiFile psiFile) {
+    public void saveReport(final PsiFile psiFile, List<MethodStatistic> methodStatistics) throws IOException {
         String path = psiFile.getManager().getProject().getBasePath();
-
-
+        htmlTemplate.writeToHTML(path, methodStatistics);
     }
 
 }

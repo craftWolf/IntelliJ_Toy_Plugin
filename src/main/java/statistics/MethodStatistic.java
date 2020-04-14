@@ -63,4 +63,47 @@ public class MethodStatistic {
         this.superClass = MethodDetailsUtil.mySuper(psiMethod);
     }
 
+    public int getLines() {
+        return lines;
+    }
+
+    public int getLinesOfCode() {
+        return linesOfCode;
+    }
+
+    public int getCycloComplexity() {
+        return cycloComplexity;
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
+    }
+
+    public int getStatementsCount() {
+        return statementsCount;
+    }
+
+    public int getNumOfCalls() {
+        return numOfCalls;
+    }
+
+    public boolean hasJavaDoc() {
+        return hasJavaDoc;
+    }
+
+    public boolean doesOverride() {
+        return doesOverride;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSuperClass() {
+        return superClass;
+    }
+
+    public Hashtable<String, Integer> getCallsPerClass() {
+        return callsPerClass;
+    }
 }
