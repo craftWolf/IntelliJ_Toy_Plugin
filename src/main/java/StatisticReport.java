@@ -1,27 +1,22 @@
+import MethodUtils.CallsLookupUtil;
+import MethodUtils.CycloComplexityUtil;
+import MethodUtils.LineMetricsUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.tree.PsiCommentImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.net.URL;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -60,15 +55,12 @@ public class StatisticReport extends AnAction {
             System.out.println("----" + method.getName() + "----");
             names.add(method.getName());
 
-            CallsLookup clu = new CallsLookup(method);
-            LineMetrics lM = new LineMetrics(method);
-
-            int cycloComplexity = CycloComplexity.getComplexityLvl(method);
-            int commentsCount = commentsCount(method);
-            int statementsCount = statementsCount(method);
-            int numberOfCalls = clu.getNumberOfCalls();
-            int allLines = lM.getAllLines();
-            int linesOfCode = lM.getLinesOfCode();
+            int cycloComplexity = CycloComplexityUtil.getComplexityLvl(method);
+            int commentsCount = LineMetricsUtil.commentsCount(method);
+            int statementsCount = LineMetricsUtil.statementsCount(method);
+            int numberOfCalls = CallsLookupUtil.getNumberOfCalls(CallsLookupUtil.getPairs(method));
+            int allLines = LineMetricsUtil.countAllLines(method);
+            int linesOfCode = LineMetricsUtil.countLinesOfCode(method);
             boolean hasJavaDoc = hasJavaDoc(method);
             boolean doesOverride = doesOverride(method);
             values.add(cycloComplexity);
@@ -155,17 +147,6 @@ public class StatisticReport extends AnAction {
         } else return "NoSuperMethod";
     }
 
-    public int statementsCount(PsiMethod method) {
-        PsiCodeBlock methodBody = method.getBody();
-        Collection<PsiStatement> statements = PsiTreeUtil.collectElementsOfType(methodBody, PsiStatement.class);
-        return statements.size();
-    }
-
-    public int commentsCount(PsiMethod method) {
-        PsiCodeBlock methodBody = method.getBody();
-        Collection<PsiCommentImpl> comments = PsiTreeUtil.collectElementsOfType(methodBody, PsiCommentImpl.class);
-        return comments.size();
-    }
 
     public boolean hasJavaDoc(PsiMethod method) {
         PsiDocComment comment = method.getDocComment();

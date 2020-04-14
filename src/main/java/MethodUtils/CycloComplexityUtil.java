@@ -1,10 +1,12 @@
+package MethodUtils;
+
 import com.intellij.psi.*;
 
 /**
  * Class responsible for calculating
  * Cyclomatic Complexity of the provided Method.
  */
-class CycloComplexity {
+public final class CycloComplexityUtil {
 
     /**
      * Retrieves the CC of the given PsiMethod.

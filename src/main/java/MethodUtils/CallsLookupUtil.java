@@ -1,3 +1,5 @@
+package MethodUtils;
+
 import com.intellij.psi.*;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -8,48 +10,36 @@ import java.util.Hashtable;
 /**
  * Finds and Calculates the TotalNumber of Calls of a specific Method.
  */
-public class CallsLookup {
+public final class CallsLookupUtil {
 
     /**
-     * HashTable to contain Pairs of (Class,NumberOfCalls).
+     * Default Constructor
      */
-    private Hashtable<String, Integer> pairs;
+    CallsLookupUtil() {
+    }
 
     /**
-     * Total numbers of calls.
-     */
-    private int numberOfCalls;
-
-    /**
-     * Class Constructor.
-     * Calculates and Initializes the Pairs table and numbersOfCalls fields.
+     * Calculates based on Pairs table and numbersOfCalls fields.
      *
-     * @param method method to work with.
+     * @param pairs HashTable of (Class,NumberOfCalls) to work with.
+     * @return Total number of calls given the Table
      */
-    public CallsLookup(PsiMethod method) {
-        pairs = inClassCalls(method);
-        numberOfCalls = 0;
+    public static int getNumberOfCalls(Hashtable<String, Integer> pairs) {
+        int numberOfCalls = 0;
         for (Integer v : pairs.values()) {
             numberOfCalls += v;
         }
+        return numberOfCalls;
     }
 
     /**
-     * Getter for the Table of Pairs.
+     * Calculate the Table of Pairs (Class,NumberOfCalls)
      *
+     * @param method method to work with.
      * @return table of (Class,NumberOfCalls) pairs
      */
-    public Hashtable<String, Integer> getPairs() {
-        return pairs;
-    }
-
-    /**
-     * Getter of the Method total Number of calls in the Project.
-     *
-     * @return method Number of Calls
-     */
-    public int getNumberOfCalls() {
-        return numberOfCalls;
+    public static Hashtable<String, Integer> getPairs(PsiMethod method) {
+        return inClassCalls(method);
     }
 
     /**
@@ -58,7 +48,7 @@ public class CallsLookup {
      * @param psiMethod method for which calls to look for
      * @return table fo pairs
      */
-    private Hashtable<String, Integer> inClassCalls(PsiMethod psiMethod) {
+    private static Hashtable<String, Integer> inClassCalls(PsiMethod psiMethod) {
         Hashtable<String, Integer> allClasses = new Hashtable<String, Integer>();
         Query<PsiReference> query = ReferencesSearch.search(psiMethod);
         for (PsiReference reference : query) {
