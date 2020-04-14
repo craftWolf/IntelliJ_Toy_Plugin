@@ -1,4 +1,4 @@
-package MethodUtils;
+package utils;
 
 import com.intellij.psi.*;
 import com.intellij.psi.search.searches.ReferencesSearch;
@@ -24,7 +24,7 @@ public final class CallsLookupUtil {
      * @param pairs HashTable of (Class,NumberOfCalls) to work with.
      * @return Total number of calls given the Table
      */
-    public static int getNumberOfCalls(Hashtable<String, Integer> pairs) {
+    public static int countNumberOfCalls(Hashtable<String, Integer> pairs) {
         int numberOfCalls = 0;
         for (Integer v : pairs.values()) {
             numberOfCalls += v;
@@ -38,7 +38,7 @@ public final class CallsLookupUtil {
      * @param method method to work with.
      * @return table of (Class,NumberOfCalls) pairs
      */
-    public static Hashtable<String, Integer> getPairs(PsiMethod method) {
+    public static Hashtable<String, Integer> getPairs(final PsiMethod method) {
         return inClassCalls(method);
     }
 
@@ -48,12 +48,12 @@ public final class CallsLookupUtil {
      * @param psiMethod method for which calls to look for
      * @return table fo pairs
      */
-    private static Hashtable<String, Integer> inClassCalls(PsiMethod psiMethod) {
-        Hashtable<String, Integer> allClasses = new Hashtable<String, Integer>();
+    private static Hashtable<String, Integer> inClassCalls(final PsiMethod psiMethod) {
+        Hashtable<String, Integer> allClasses = new Hashtable<>();
         Query<PsiReference> query = ReferencesSearch.search(psiMethod);
-        for (PsiReference reference : query) {
-            PsiElement element = reference.getElement();
-            PsiClass elClass = PsiTreeUtil.getParentOfType(element, PsiClass.class);
+        for (final PsiReference reference : query) {
+            final PsiElement element = reference.getElement();
+            final PsiClass elClass = PsiTreeUtil.getParentOfType(element, PsiClass.class);
 
             if (elClass != null) {
                 if (allClasses.containsKey(elClass.getName())) {

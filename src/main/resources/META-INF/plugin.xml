@@ -18,7 +18,7 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="main.java.StatisticReport" class="StatisticReport" text="Statistic Report"
+        <action id="main.java.StatisticReport" class="actions.ReportStatisticAction" text="Statistic Report"
                 description="Returns statistic of the method">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>

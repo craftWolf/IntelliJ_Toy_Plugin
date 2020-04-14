@@ -1,4 +1,4 @@
-package MethodUtils;
+package utils;
 
 import com.intellij.psi.*;
 
@@ -14,7 +14,7 @@ public final class CycloComplexityUtil {
      * @param element PsiMethod for which CC is to be calculated
      * @return the CC value
      */
-    public static int getComplexityLvl(PsiMethod element) {
+    public static int findComplexityLvl(PsiMethod element) {
         if (element == null) {
             return 1;
         }

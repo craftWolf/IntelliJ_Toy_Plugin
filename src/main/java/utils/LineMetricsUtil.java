@@ -1,4 +1,4 @@
-package MethodUtils;
+package utils;
 
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.PsiCommentImpl;
@@ -31,7 +31,7 @@ public final class LineMetricsUtil {
      * @param psiMethod The PsiMethod to calculate TotalLines metrics for.
      * @return number of lines a method has.
      */
-    public static int countAllLines(PsiMethod psiMethod) {
+    public static int countAllLines(final PsiMethod psiMethod) {
         return countLines(psiMethod.getBody().textToCharArray())[0];
     }
 
@@ -44,8 +44,8 @@ public final class LineMetricsUtil {
      * @param psiMethod The PsiMethod to calculate Code-Lines metrics for.
      * @return number of Code-Lines
      */
-    public static int countLinesOfCode(PsiMethod psiMethod) {
-        PsiCodeBlock pBlock = (PsiCodeBlock) psiMethod.getBody().copy();
+    public static int countLinesOfCode(final PsiMethod psiMethod) {
+        PsiCodeBlock pBlock = (PsiCodeBlock) psiMethod.getBody().copy(); //create a copy of the method
         Collection<PsiCommentImpl> comments = PsiTreeUtil.collectElementsOfType(pBlock, PsiCommentImpl.class);
         if (!comments.isEmpty()) {
             for (PsiCommentImpl comment : comments) {
@@ -76,8 +76,8 @@ public final class LineMetricsUtil {
      * @param method method to work with
      * @return number of Comments in the method
      */
-    public static int commentsCount(PsiMethod method) {
-        PsiCodeBlock methodBody = method.getBody();
+    public static int commentsCount(final PsiMethod method) {
+        final PsiCodeBlock methodBody = method.getBody();
         Collection<PsiCommentImpl> comments = PsiTreeUtil.collectElementsOfType(methodBody, PsiCommentImpl.class);
         return comments.size();
     }
