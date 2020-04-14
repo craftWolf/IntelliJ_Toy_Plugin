@@ -27,12 +27,20 @@ public class MethodStatistic {
     private String superClass;
     private Hashtable<String, Integer> callsPerClass;
 
+    /**
+     *  A method that calls the calculation of all the statistics.
+     *  @param psiMethod A psi method that contains name of the method
+     */
 
     public MethodStatistic(@NotNull PsiMethod psiMethod) {
         this.psiMethod = psiMethod;
         this.name = psiMethod.getName();
         calculateAllStats();
     }
+
+    /**
+     * The method that calls the calculators of all the methods below.
+     */
 
     private void calculateAllStats() {
         calculateLineStats();
@@ -41,6 +49,12 @@ public class MethodStatistic {
         findMethodDetails();
     }
 
+
+    /**
+     * The method that calls the calculators of all the statistics about
+     * number of lines, statements and comments.
+     */
+
     private void calculateLineStats() {
         this.lines = LineMetricsUtil.countAllLines(psiMethod);
         this.linesOfCode = LineMetricsUtil.countLinesOfCode(psiMethod);
@@ -48,14 +62,28 @@ public class MethodStatistic {
         this.commentsCount = LineMetricsUtil.commentsCount(psiMethod);
     }
 
+    /**
+     * The method that calls the calculators of cyclomatic complexity.
+     */
+
     private void calculateCComplexity() {
         this.cycloComplexity = CycloComplexityUtil.findComplexityLvl(psiMethod);
     }
+
+    /**
+     * The method that calls the calculators of all the statistics about
+     * calls to the method from other classes.
+     */
 
     private void calculateCalls() {
         this.callsPerClass = CallsLookupUtil.getPairs(psiMethod);
         this.numOfCalls = CallsLookupUtil.countNumberOfCalls(callsPerClass);
     }
+
+    /**
+     * The method that calls the calculators of all the non-integer
+     * statistics of the method.
+     */
 
     private void findMethodDetails() {
         this.hasJavaDoc = MethodDetailsUtil.hasJavaDoc(psiMethod);

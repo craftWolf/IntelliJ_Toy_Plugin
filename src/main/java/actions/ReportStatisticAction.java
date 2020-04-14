@@ -54,6 +54,11 @@ public class ReportStatisticAction extends AnAction {
                 "Statistics Saved", Messages.getInformationIcon());
     }
 
+    /**
+     * The method that calculates all the statistics.
+     * @param psiFile File on which the plugin is running
+     */
+
     public List<MethodStatistic> calculateStats(final PsiFile psiFile) {
         List<MethodStatistic> methodStats = new ArrayList<>();
         final PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
@@ -80,6 +85,11 @@ public class ReportStatisticAction extends AnAction {
         }
     }
 
+    /**
+     * The method that saves report.
+     * @param psiFile File on which the plugin is running
+     * @param methodStatistics All the gathered statistics that goes to report
+     */
     public void saveReport(final PsiFile psiFile, List<MethodStatistic> methodStatistics) throws IOException {
         String path = psiFile.getManager().getProject().getBasePath();
         htmlTemplate.writeToHTML(path, methodStatistics);
