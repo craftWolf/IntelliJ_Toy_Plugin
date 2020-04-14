@@ -19,6 +19,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 
 
 public class StatisticReport extends AnAction {
@@ -53,17 +58,32 @@ public class StatisticReport extends AnAction {
         values = new ArrayList<>();
         javadoc = new ArrayList<>();
         for (PsiMethod method : methods) {
-            System.out.println(method.getName());
+            System.out.println("----"+method.getName()+"----");
             names.add(method.getName());
+
+            CallsLookupUtil clu = new CallsLookupUtil(method);
+            LineMetrics lM = new LineMetrics(method);
+
             int cycloComplexity = CycloComplexity.getComplexityLvl(method);
-            System.out.println("\t CC"+ cycloComplexity);
             int commentsCount = commentsCount(method);
             int statementsCount = statementsCount(method);
+            int numberOfCalls = clu.getNumberOfCalls();
+            int allLines = lM.getAllLines();
+            int linesOfCode = lM.getLinesOfCode();
             boolean hasJavaDoc = hasJavaDoc(method);
+            boolean doesOverride = doesOverride(method);
             values.add(cycloComplexity);
             values.add(commentsCount);
             values.add(statementsCount);
+            values.add(numberOfCalls);
+            values.add(allLines);
+            values.add(linesOfCode);
             javadoc.add(hasJavaDoc);
+            javadoc.add(doesOverride);
+            System.out.println("\t CC"+ cycloComplexity);
+            System.out.println("\t Lines "+allLines+" "+linesOfCode);
+            System.out.println("\t Calls "+numberOfCalls);
+            System.out.println("\t Ovverides? " + doesOverride);
             /* TODO:
             *   Lines of code
             *   Effective Lines of code
@@ -100,6 +120,17 @@ public class StatisticReport extends AnAction {
 
     public static List<Boolean> getJavadoc(){
         return javadoc;
+    }
+
+    public boolean doesOverride(PsiMethod psiMethod){
+        final List<Boolean> b = new ArrayList<>();
+        PsiAnnotation[] annotations = psiMethod.getAnnotations();
+        if (annotations.length!=0){
+            for(@NotNull PsiAnnotation anno:annotations){
+                if (anno.getQualifiedName().equals("Override")) return true;
+            }
+        }
+        return false;
     }
 
     public int statementsCount(PsiMethod method) {
