@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class htmlTemplate {
+
+    public static final String OUTPUT_DIR = "/Statistic report/new.html";
+
     public static String getStr(List<String> names, List<Integer> values, List<Boolean> booleans) {
         StringBuilder text = new StringBuilder("<html> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <title> Statistic Report" +
                 "</title> </head> <body> <table align = \"center\" width=\"100%\" style=\"text-align:center\" > <tr> <th>Method</th> <th>CC</th> " +

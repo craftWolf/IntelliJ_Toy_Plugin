@@ -35,27 +35,19 @@ public class ReportStatisticAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         Project currentProject = event.getProject();
-        Editor editor = event.getData(CommonDataKeys.EDITOR);
+        PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
 
-        if (editor == null) {
+        if (psiFile == null) {
             String dlgTitle = event.getPresentation().getDescription();
-            StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Not in editor");
+            StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " No File Selected");
             Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
             return;
         }
 
-        PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
         List<MethodStatistic> methodStatistics = calculateStats(psiFile);
-
-        StringBuffer dlgMsg = new StringBuffer(event.getPresentation().getText() + " Selected!");
-        String dlgTitle = event.getPresentation().getDescription();
-        // If an element is selected in the editor, add info about it.
-        Navigatable nav = event.getData(CommonDataKeys.NAVIGATABLE);
-        if (nav != null) {
-            dlgMsg.append(String.format("\nSelected Element: %s", nav.toString()));
-        }
-        Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
-
+        saveReport(psiFile);
+        Messages.showMessageDialog(currentProject, "Method statistics saved inside: " + htmlTemplate.OUTPUT_DIR,
+                "Statistics Saved", Messages.getInformationIcon());
     }
 
     public List<MethodStatistic> calculateStats(final PsiFile psiFile) {
@@ -86,26 +78,8 @@ public class ReportStatisticAction extends AnAction {
 
     public void saveReport(final PsiFile psiFile) {
         String path = psiFile.getManager().getProject().getBasePath();
-        
+
 
     }
 
-
-//    // doesn't take into account inner classes!
-//    public PsiMethod[] extractMethods(PsiFile psiFile) {
-//        PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
-//        final PsiClass[] classes = psiJavaFile.getClasses();
-//
-//        PsiMethod[] methods = new PsiMethod[0];
-//        for (PsiClass javaClass : classes) {
-//            methods = concat(methods, javaClass.getMethods());
-//        }
-//        return methods;
-//    }
-//
-//    public static <T> T[] concat(T[] first, T[] second) {
-//        T[] result = Arrays.copyOf(first, first.length + second.length);
-//        System.arraycopy(second, 0, result, first.length, second.length);
-//        return result;
-//    }
 }
