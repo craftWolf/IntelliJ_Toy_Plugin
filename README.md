@@ -24,7 +24,7 @@ It is a student project which was implemented on the request of a JetBrains repr
 1) Clone this repository using SSH or HTTPS.
 2) Open the project (make sure `Use auto-import` is checked)
 3) Inside IntelliJ IDEA terminal invoke `gradle buildPlugin` to create the plugin distribution.
-The resulting JAR/ZIP is located in `build/distributions` (from the root of your project).
+The resulting JAR/ZIP is located in `build/distributions` (from the root of the project).
 4) [Install](https://www.jetbrains.com/help/idea/managing-plugins.html#installing-plugins-from-disk) the plugin manually.
 
 
@@ -58,7 +58,7 @@ The resulting JAR/ZIP is located in `build/distributions` (from the root of your
   - Lines of Code
   - Cyclomatic complexity
   - Does it have JavaDoc comment
-  - Num of calls in the whole project
+  - Number of calls in the whole project
   - Does it override any other method
   - Name of the class with the method it overrides
 
