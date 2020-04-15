@@ -24,7 +24,7 @@ It is a student project which was implemented on the request of a JetBrains repr
 1) Clone this repository using SSH or HTTPS.
 2) Open the project (make sure `Use auto-import` is checked)
 3) Inside IntelliJ IDEA terminal invoke `gradle buildPlugin` to create the plugin distribution.
-The resulting JAR/ZIP is located in `build/distributions` (in the root of your project).
+The resulting JAR/ZIP is located in `build/distributions` (from the root of your project).
 4) [Install](https://www.jetbrains.com/help/idea/managing-plugins.html#installing-plugins-from-disk) the plugin manually.
 
 
@@ -34,7 +34,7 @@ The resulting JAR/ZIP is located in `build/distributions` (in the root of your p
 2) Make sure the java file you want is opened and you are inside the editor
 3) Go to Tools -> Statistic Report;
     - Alternatively, you can press `Ctrl+Alt+M, S`
-4) Your report will be generated inside the `/statisticReport` folder (in the root of your project)
+4) Your report will be generated inside the `/statisticReport` folder (from the root of your project)
 
 ### Run without installation
 
@@ -47,7 +47,7 @@ The resulting JAR/ZIP is located in `build/distributions` (in the root of your p
 5) A new IDE window will appear, select your project
 6) Go to Tools -> Statistic Report;
     - Alternatively, you can press `Ctrl+Alt+M, S`
-7) Your report will be generated inside the `/statisticReport` folder (in the root of your project)
+7) Your report will be generated inside the `/statisticReport` folder (from the root of your project)
 
 
 ### Generated method metrics
