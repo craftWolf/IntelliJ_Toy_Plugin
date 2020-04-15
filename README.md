@@ -8,7 +8,8 @@ It is a student project which was implemented on the request of a JetBrains repr
 
 - [Getting Started](#getting-started)
   - [Installation](#installation)
-  - [Run](#run)
+  - [Run with installation](#run-with-installation)
+  - [Run without installation](#run-without-installation)
   - [Generated method metrics](#generated-method-metrics)
 
 - [Built With](#built-with)
@@ -21,9 +22,10 @@ It is a student project which was implemented on the request of a JetBrains repr
 ### Installation
 
 1) Clone this repository using SSH or HTTPS.
-2) Inside IntelliJ IDEA terminal invoke `gradle buildPlugin` to create the plugin distribution.
+2) Open the project (make sure `Use auto-import` is checked)
+3) Inside IntelliJ IDEA terminal invoke `gradle buildPlugin` to create the plugin distribution.
 The resulting JAR/ZIP is located in `build/distributions` (in the root of your project).
-3) [Install](https://www.jetbrains.com/help/idea/managing-plugins.html#installing-plugins-from-disk) the plugin manually.
+4) [Install](https://www.jetbrains.com/help/idea/managing-plugins.html#installing-plugins-from-disk) the plugin manually.
 
 
 ### Run with installation
@@ -32,16 +34,20 @@ The resulting JAR/ZIP is located in `build/distributions` (in the root of your p
 2) Make sure the java file you want is opened and you are inside the editor
 3) Go to Tools -> Statistic Report;
     - Alternatively, you can press `Ctrl+Alt+M, S`
-4) Your report will be generated inside the `/statisticReport` folder
+4) Your report will be generated inside the `/statisticReport` folder (in the root of your project)
 
 ### Run without installation
 
-1) Download and install the plugin
-2) 
-2) Make sure the java file you want is opened and you are inside the editor
-3) Go to Tools -> Statistic Report;
+1) Clone this repository using SSH or HTTPS.
+2) Open the project (make sure `Use auto-import` is checked)
+3) Create a new configuration;
+    - Make sure the gradle project is selected
+    - In the *Tasks* field add `:runIde` and press *Ok*
+4) Run the plugin (Shift+F10)
+5) A new IDE window will appear, select your project
+6) Go to Tools -> Statistic Report;
     - Alternatively, you can press `Ctrl+Alt+M, S`
-4) Your report will be generated inside the `/statisticReport` folder
+7) Your report will be generated inside the `/statisticReport` folder (in the root of your project)
 
 
 ### Generated method metrics
