@@ -1,0 +1,28 @@
+<idea-plugin>
+    <id>org.example.IntelliJ_Toy_Plugin</id>
+    <name>Statistic Report</name>
+    <vendor>IntelliJ</vendor>
+
+    <description><![CDATA[
+    Statistic is of the methods of the selected class is returned.
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="main.java.StatisticReport" class="StatisticReport" text="Statistic Report"
+                description="Returns statistic of the method">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
+            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+        </action>
+    </actions>
+</idea-plugin>
