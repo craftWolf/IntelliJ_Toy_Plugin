@@ -32,7 +32,11 @@ public final class LineMetricsUtil {
      * @return number of lines a method has.
      */
     public static int countAllLines(final PsiMethod psiMethod) {
-        return countLines(psiMethod.getBody().textToCharArray())[0];
+        PsiCodeBlock methodBody = psiMethod.getBody();
+        if (methodBody == null) {
+            return 0;
+        }
+        return countLines(methodBody.textToCharArray())[0];
     }
 
     /**
@@ -45,7 +49,11 @@ public final class LineMetricsUtil {
      * @return number of Code-Lines
      */
     public static int countLinesOfCode(final PsiMethod psiMethod) {
-        PsiCodeBlock pBlock = (PsiCodeBlock) psiMethod.getBody().copy(); //create method copy
+        PsiCodeBlock methodBody = psiMethod.getBody();
+        if (methodBody == null) {
+            return 0;
+        }
+        PsiCodeBlock pBlock = (PsiCodeBlock) methodBody.copy(); //create method copy
         Collection<PsiCommentImpl> comments = PsiTreeUtil.collectElementsOfType(pBlock, PsiCommentImpl.class);
         if (!comments.isEmpty()) {
             for (PsiCommentImpl comment : comments) {
