@@ -44,7 +44,7 @@ The resulting JAR/ZIP is located in `build/distributions` (from the root of the 
     - Make sure the gradle project is selected
     - In the *Tasks* field add `:runIde` and press *Ok*
 4) Run the plugin (Shift+F10)
-5) A new IDE window will appear, select your project
+5) A new IDE window will appear, select your project and open the class you want to inspect
 6) Go to Tools -> Statistic Report;
     - Alternatively, you can press `Ctrl+Alt+M, S`
 7) Your report will be generated inside the `/statisticReport` folder (from the root of your project)
